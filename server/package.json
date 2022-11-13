@@ -12,9 +12,11 @@
     "@babel/node": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
     "babel-plugin-module-resolver": "^4.1.0",
+    "concurrently": "^7.5.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^6.7.2"
@@ -22,6 +24,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel  src -d dist",
-    "start": "yarn build && node dist/index.js"
+    "start": "yarn build && node dist/index.js",
+    "both-dev": "concurrently \"npm run dev\" \"npm --prefix ../client/ run dev\""
   }
 }

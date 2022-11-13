@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import express from 'express'
 import { connect as mongoConnect } from 'mongoose'
+import cors from 'cors'
 
 import Todo from 'models/Todo'
 
@@ -13,10 +14,12 @@ mongoConnect(process.env.MONGO_URI)
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(cors())
 
 app.get('/hello', (_, res) => res.send('Hello from Cules Coding'))
 
-app.post('/createTodo', async (req, res) => {
+app.post('/addTodo', async (req, res) => {
 	const { body } = req
 
 	const newTodo = new Todo(body)
@@ -31,6 +34,11 @@ app.delete('/deleteTodo', async (req, res) => {
 	} = req
 
 	const response = await Todo.findByIdAndDelete(todoId)
+	return res.send(response)
+})
+
+app.get('/getAllTodos', async (_, res) => {
+	const response = await Todo.find({})
 	return res.send(response)
 })
 
