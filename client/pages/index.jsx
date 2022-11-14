@@ -10,6 +10,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 const axiosInstance = axios.create({
+	// Getting the api url from environments
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
 
@@ -18,14 +19,17 @@ const Home = () => {
 	const [inputVal, setInputVal] = useState('')
 	const [refresh, setRefresh] = useState(false)
 
+	// Getting all the todos
 	const getTodos = () => {
 		axiosInstance.get('/getAllTodos').then(res => setTodos(res.data))
 	}
 
+	// Displaying all the todos on first render
 	useEffect(() => {
 		getTodos()
 	}, [])
 
+	// refreshing all the todos when the todos are going to be updated
 	useEffect(() => {
 		if (refresh) {
 			getTodos()
@@ -36,6 +40,7 @@ const Home = () => {
 		}
 	}, [refresh])
 
+	// Deleting the todo
 	const deleteTodo = todoId => () => {
 		axiosInstance
 			.delete('/deleteTodo', {
@@ -44,6 +49,7 @@ const Home = () => {
 			.then(() => setRefresh(true))
 	}
 
+	// Adding a todo
 	const addTodo = e => {
 		e.preventDefault()
 		axiosInstance.post('/addTodo', { title: inputVal }).then(() => {
@@ -67,6 +73,7 @@ const Home = () => {
 				<Button type='submit'>Add</Button>
 			</Form>
 
+			{/* Display all the todos */}
 			{todos.map(({ _id, title }) => (
 				<Box key={_id} mb={10}>
 					<Center w='180px' h='80px' bg='red.200'>

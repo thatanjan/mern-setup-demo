@@ -13,12 +13,16 @@ mongoConnect(process.env.MONGO_URI)
 
 const app = express()
 
+// To parse request body
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+// To handle cors error
 app.use(cors())
 
 app.get('/hello', (_, res) => res.send('Hello from Cules Coding'))
 
+// Adding a todo
 app.post('/addTodo', async (req, res) => {
 	const { body } = req
 
@@ -28,6 +32,7 @@ app.post('/addTodo', async (req, res) => {
 	return res.send(savedtodo)
 })
 
+// Deleting a todo
 app.delete('/deleteTodo', async (req, res) => {
 	const {
 		body: { todoId },
@@ -37,6 +42,7 @@ app.delete('/deleteTodo', async (req, res) => {
 	return res.send(response)
 })
 
+// Getting all the todos
 app.get('/getAllTodos', async (_, res) => {
 	const response = await Todo.find({})
 	return res.send(response)
